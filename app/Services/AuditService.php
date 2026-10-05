@@ -13,14 +13,14 @@ class AuditService
 {
     private const SECRET_KEYS = ['password', 'api_key', 'secret', 'token', 'passkey', 'sender_id'];
 
-    public function log(string $action, ?Model $model = null, array $old = [], array $new = []): void
+    public function log(string $action, ?Model $model = null, array $old = [], array $new = [], array $extra = []): void
     {
         AuditLog::create([
             'user_id' => Auth::id(),
             'action' => $action,
             'model_type' => $model?->getMorphClass(),
             'model_id' => $model?->getKey(),
-            'old_values' => $this->sanitize($old) ?: null,
+            'old_values' => $this->sanitize($old) ?: ($extra ? $this->sanitize($extra) : null),
             'new_values' => $this->sanitize($new) ?: null,
             'ip_address' => request()->ip(),
             'user_agent' => substr((string) request()->userAgent(), 0, 500),

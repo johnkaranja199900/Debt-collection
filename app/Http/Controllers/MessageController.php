@@ -33,7 +33,7 @@ class MessageController extends Controller
         ]);
     }
 
-    public show(Request $request, Conversation $conversation): View
+    public function show(Request $request, Conversation $conversation): View
     {
         abort_unless(Auth::user()->can('manage_messages'), 403);
 
@@ -66,7 +66,7 @@ class MessageController extends Controller
 
         $conversation = Conversation::firstOrCreate(
             ['customer_id' => $customer->id, 'channel' => $data['channel']],
-            ['direction' => 'outbound', 'status' => 'open'],
+            ['status' => 'open', 'remote_contact' => $customer->phone],
         );
 
         $result = $data['channel'] === 'whatsapp'
@@ -76,8 +76,7 @@ class MessageController extends Controller
         Message::create([
             'conversation_id' => $conversation->id,
             'direction' => 'outbound',
-            'channel' => $data['channel'],
-            'body' => $data['body'],
+            'message_body' => $data['body'],
             'status' => $result['status'],
             'provider_message_id' => $result['provider_message_id'] ?? null,
             'sent_at' => now(),

@@ -43,14 +43,12 @@ class SettingsController extends Controller
             'default_payment_terms' => ['required', 'integer', 'min:0', 'max:365'],
             'invoice_prefix' => ['required', 'string', 'max:10'],
             'quotation_prefix' => ['required', 'string', 'max:10'],
-            'logo_path' => ['nullable', 'string', 'max:255'],
             'logo' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
         ]);
 
         if ($request->hasFile('logo')) {
-            $data['logo_path'] = $request->file('logo')->store('logos', 'public');
+            $data['logo'] = $request->file('logo')->store('logos', 'public');
         }
-        unset($data['logo']);
 
         $business->update($data);
         $this->audit->log('settings_updated', $business, $old, Arr::except($data, ['logo_path']));
