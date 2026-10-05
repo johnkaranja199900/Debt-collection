@@ -58,7 +58,7 @@ Route::get('pay/{invoice:public_id}', [PublicPayController::class, 'show'])
 */
 Route::middleware(['auth', 'active'])->group(function () {
 
-    Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Profile (self-service)
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
