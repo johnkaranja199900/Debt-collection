@@ -36,6 +36,18 @@ class Debt extends Model
         return $this->hasMany(ReminderLog::class);
     }
 
+    /** Pull the latest truth from the invoice ledger, then re-age. */
+    public function syncFromInvoice(): void
+    {
+        if ($this->invoice) {
+            $this->amount_paid = $this->invoice->amount_paid;
+            $this->balance = $this->invoice->balance;
+        }
+
+        $this->refreshAging();
+        $this->save();
+    }
+
     /**
      * Deterministic aging engine (master spec sections 17-18).
      * Buckets: current, due_soon (<=7 days to due), 1_7, 8_30, 31_60, 61_90, 90_plus.

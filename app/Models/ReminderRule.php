@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReminderRule extends Model
 {
-    protected $fillable = ['name', 'offset_days', 'channel', 'message_template_id', 'is_active', 'cooldown_days'];
+    protected $fillable = ['name', 'trigger_type', 'offset_days', 'channel', 'message_template_id', 'is_active', 'cooldown_days'];
 
     protected $casts = ['is_active' => 'boolean', 'offset_days' => 'integer', 'cooldown_days' => 'integer'];
 

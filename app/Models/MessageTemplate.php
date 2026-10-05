@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class MessageTemplate extends Model
 {
-    protected $fillable = ['name', 'channel', 'type', 'content', 'variables', 'status'];
+    protected $fillable = ['name', 'channel', 'type', 'content', 'variables', 'is_default'];
 
-    protected $casts = ['variables' => 'array'];
+    protected $casts = ['variables' => 'array', 'is_default' => 'boolean'];
 
     /**
      * Deterministic variable rendering. Unknown or missing variables throw,

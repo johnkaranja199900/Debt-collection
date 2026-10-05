@@ -38,6 +38,14 @@ return [
             'report' => false,
         ],
 
+        // Generated PDFs: private; downloads always authorised via controllers.
+        'documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/documents'),
+            'throw' => false,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

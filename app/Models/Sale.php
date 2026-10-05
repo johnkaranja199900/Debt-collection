@@ -36,6 +36,11 @@ class Sale extends Model
         return $this->hasMany(SaleItem::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(\App\Models\Invoice::class);
+    }
+
     public function invoice()
     {
         return $this->hasOne(Invoice::class);

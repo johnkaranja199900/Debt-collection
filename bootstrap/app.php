@@ -11,7 +11,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // 'active' kicks users whose account was just deactivated by the owner.
+        $middleware->alias([
+            'active' => \App\Http\Middleware\EnsureUserIsActive::class,
+        ]);
+
+        // Security headers on every response (spec 72). CSP kept permissive
+        // enough not to break Vite/inline Alpine while still hardening basics.
+        $middleware->web(append: [
+            \App\Http\Middleware\AddSecurityHeaders::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

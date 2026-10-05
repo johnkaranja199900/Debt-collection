@@ -26,4 +26,9 @@ class ReminderLog extends Model
     {
         return $this->belongsTo(Debt::class);
     }
+
+    public function template()
+    {
+        return $this->belongsTo(\App\Models\MessageTemplate::class, 'message_template_id');
+    }
 }

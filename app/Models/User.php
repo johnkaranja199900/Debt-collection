@@ -16,8 +16,13 @@ class User extends Authenticatable
     public const ROLE_STAFF = 'staff';
 
     protected $fillable = [
-        'name', 'email', 'phone', 'password', 'role',
+        'name', 'email', 'phone', 'password', 'role', 'is_active',
     ];
+
+    public function hasVerifiedEmail(): bool
+    {
+        return ! is_null($this->email_verified_at);
+    }
 
     protected $hidden = [
         'password', 'remember_token', 'two_factor_secret',
@@ -31,6 +36,7 @@ class User extends Authenticatable
             'phone_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_enabled' => 'boolean',
+            'is_active' => 'boolean',
             'two_factor_secret' => 'encrypted',
             'last_login_at' => 'datetime',
             'locked_until' => 'datetime',
@@ -57,12 +63,14 @@ class User extends Authenticatable
             self::ROLE_OWNER => true,
             self::ROLE_MANAGER => in_array($permission, [
                 'view_dashboard', 'manage_customers', 'manage_sales', 'manage_invoices',
-                'manage_payments', 'manage_expenses', 'manage_debts', 'send_messages',
-                'view_reports', 'manage_quotations', 'view_audit_logs',
+                'view_invoices', 'manage_payments', 'manage_expenses', 'manage_debts',
+                'view_debts', 'send_messages', 'manage_messages', 'view_reports',
+                'manage_quotations', 'manage_products', 'manage_reminders', 'view_audit_logs',
             ], true),
             self::ROLE_STAFF => in_array($permission, [
                 'view_dashboard', 'manage_customers', 'manage_sales', 'send_messages',
-                'manage_quotations',
+                'manage_quotations', 'view_invoices', 'view_debts', 'manage_messages',
+                'manage_products',
             ], true),
             default => false,
         };
