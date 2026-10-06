@@ -21,7 +21,7 @@ return new class extends Migration
 
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
             $table->string('channel', 20)->default('whatsapp');
             $table->string('external_conversation_id', 150)->nullable()->unique();

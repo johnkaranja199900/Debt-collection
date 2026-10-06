@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->uuid("public_id")->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid("public_id")->unique();
             $table->string('customer_code', 30)->unique();
             $table->string('name');
             $table->string('business_name')->nullable();
@@ -38,7 +38,7 @@ return new class extends Migration
 
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->uuid("public_id")->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid("public_id")->unique();
             $table->string('sku', 60)->unique();
             $table->string('name')->index();
             $table->text('description')->nullable();

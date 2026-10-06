@@ -31,6 +31,16 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class)->latest();
+    }
+
+    public function saleItems()
+    {
+        return $this->hasMany(SaleItem::class);
+    }
+
     public function isLowStock(): bool
     {
         return $this->type === 'product' && (float) $this->stock_quantity <= (float) $this->low_stock_threshold;

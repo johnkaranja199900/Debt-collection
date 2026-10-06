@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->foreignId('customer_id')->constrained()->restrictOnDelete();
             $table->foreignId('invoice_id')->constrained()->restrictOnDelete();
             $table->decimal('original_amount', 15, 2);

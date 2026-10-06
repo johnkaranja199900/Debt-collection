@@ -82,10 +82,21 @@ class SaleController extends Controller
         }
 
         $sale->update(['status' => 'cancelled']);
-        // Return stock.
+
+        // Restore stock through the ledger so movements stay consistent.
+        $products = Product::whereIn('id', $sale->items->pluck('product_id'))->get()->keyBy('id');
         foreach ($sale->items as $item) {
-            Product::where('id', $item->product_id)->where('type', 'product')
-                ->increment('stock_quantity', (float) $item->quantity);
+            $product = $products->get($item->product_id);
+            if ($product && $product->type === 'product') {
+                app(\App\Services\StockService::class)->record(
+                    product: $product,
+                    type: \App\Models\StockMovement::SALE_CANCEL_IN,
+                    direction: 1,
+                    quantity: (float) $item->quantity,
+                    userId: $request->user()->id,
+                    reference: $sale,
+                );
+            }
         }
 
         $this->audit->log('sale_cancelled', $sale);

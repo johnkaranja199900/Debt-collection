@@ -1,1 +1,2 @@
-(empty)
+# PHPUnit cache
+.phpunit.result.cache

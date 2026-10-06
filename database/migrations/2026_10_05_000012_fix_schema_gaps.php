@@ -21,15 +21,13 @@ return new class extends Migration
         });
 
         Schema::table('message_templates', function (Blueprint $table) {
+            // status was never used by code; the app expects a boolean is_default flag.
             if (Schema::hasColumn('message_templates', 'status')) {
-                $table->renameColumn('status', 'is_default');
+                $table->dropColumn('status');
             }
-            Schema::table('message_templates', function (Blueprint $t) {
-                if (! Schema::hasColumn('message_templates', 'is_default')) {
-                    $t->boolean('is_default')->default(false);
-                }
-            });
-            // channel now allows 'both'
+            if (! Schema::hasColumn('message_templates', 'is_default')) {
+                $table->boolean('is_default')->default(false);
+            }
         });
 
         Schema::table('reminder_rules', function (Blueprint $table) {
@@ -45,7 +43,12 @@ return new class extends Migration
             $table->dropColumn('is_active');
         });
         Schema::table('message_templates', function (Blueprint $table) {
-            $table->renameColumn('is_default', 'status');
+            if (Schema::hasColumn('message_templates', 'is_default')) {
+                $table->dropColumn('is_default');
+            }
+            if (! Schema::hasColumn('message_templates', 'status')) {
+                $table->string('status', 20)->default('active');
+            }
         });
         Schema::table('reminder_rules', function (Blueprint $table) {
             $table->dropColumn('trigger_type');

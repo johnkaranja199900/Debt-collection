@@ -70,6 +70,9 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     // Products & services
     Route::resource('products', ProductController::class);
+    Route::get('products/{product}/stock', [ProductController::class, 'stock'])->name('products.stock');
+    Route::post('products/{product}/restock', [ProductController::class, 'restock'])->name('products.restock');
+    Route::post('products/{product}/adjust-stock', [ProductController::class, 'adjustStock'])->name('products.adjust-stock');
 
     // Sales
     Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show']);

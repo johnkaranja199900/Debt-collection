@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->string('sale_number', 40)->unique();
             $table->foreignId('customer_id')->constrained()->restrictOnDelete();
             $table->date('sale_date')->index();
@@ -45,7 +45,7 @@ return new class extends Migration
 
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->string('invoice_number', 40)->unique();
             $table->foreignId('customer_id')->constrained()->restrictOnDelete();
             $table->foreignId('sale_id')->nullable()->constrained()->nullOnDelete();
@@ -69,7 +69,7 @@ return new class extends Migration
 
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->string('payment_reference', 60)->unique();
             $table->foreignId('customer_id')->constrained()->restrictOnDelete();
             $table->foreignId('invoice_id')->nullable()->constrained()->restrictOnDelete();

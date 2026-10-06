@@ -61,7 +61,7 @@ return new class extends Migration
 
         Schema::create('mpesa_transactions', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->foreignId('invoice_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
             $table->string('checkout_request_id', 120)->unique()->comment('Idempotency key from STK push');

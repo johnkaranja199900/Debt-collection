@@ -39,7 +39,7 @@ return new class extends Migration
 
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->string('documentable_type', 120);
             $table->unsignedBigInteger('documentable_id');
             $table->string('type', 30); // invoice_pdf, quotation_pdf, receipt_pdf, statement_pdf

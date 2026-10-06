@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->string('name');
             $table->string('legal_name')->nullable();
             $table->string('business_registration_number', 100)->nullable();

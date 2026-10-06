@@ -18,7 +18,7 @@ return new class extends Migration
 
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->string('expense_number', 40)->unique();
             $table->foreignId('expense_category_id')->constrained('expense_categories')->restrictOnDelete();
             $table->string('description');
@@ -36,7 +36,7 @@ return new class extends Migration
 
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
-            $table->uuid('public_id')->unique()->default(fn () => \Illuminate\Support\Str::uuid());
+            $table->uuid('public_id')->unique();
             $table->string('quotation_number', 40)->unique();
             $table->foreignId('customer_id')->constrained()->restrictOnDelete();
             $table->date('issue_date');

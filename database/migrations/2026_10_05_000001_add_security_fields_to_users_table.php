@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('failed_login_attempts')->default(0)->after('last_login_ip');
             $table->timestamp('locked_until')->nullable()->after('failed_login_attempts');
             $table->string('role', 20)->default('staff')->after('locked_until');
-            $table->uuid('public_id')->default(fn () => \Illuminate\Support\Str::uuid())->unique()->after('id');
+            $table->uuid('public_id')->unique()->after('id');
 
             $table->index('role');
         });

@@ -92,11 +92,22 @@ class FinancialService
 
             $sale->items()->createMany($priced['lines']);
 
-            // Decrement stock for physical products.
+            // Decrement stock for physical products via the ledger (row-locked, audited).
+            $stock = app(StockService::class);
+            $products = Product::whereIn('id', array_column($priced['lines'], 'product_id'))->get()->keyBy('id');
             foreach ($priced['lines'] as $line) {
-                DB::table('products')->where('id', $line['product_id'])
-                    ->where('type', 'product')
-                    ->update(['stock_quantity' => DB::raw('GREATEST(stock_quantity - '.$line['quantity'].', 0)')]);
+                $product = $products->get($line['product_id']);
+                if ($product && $product->type === 'product') {
+                    $stock->record(
+                        product: $product,
+                        type: \App\Models\StockMovement::SALE_OUT,
+                        direction: -1,
+                        quantity: (float) $line['quantity'],
+                        unitCost: (float) $line['cost_price'],
+                        userId: auth()->id(),
+                        reference: $sale,
+                    );
+                }
             }
 
             if ($createInvoice) {
